@@ -1,0 +1,32 @@
+import { initializeApp } from './app';
+import { logger } from './common/util/logger';
+import FeatureRoute from './modules/feature/routes/feature.route';
+import PermissionRoute from './modules/permission/routes/permission.route';
+import RoleRoute from './modules/role/routes/role.route';
+import RolePermissionRoute from './modules/rolepermission/routes/rolePermission.route';
+import db from './sequelizeDir/models';
+
+const routes = [new FeatureRoute(), new RoleRoute(), new PermissionRoute(), new RolePermissionRoute()];
+
+const connectWithRetry = async () => {
+  try {
+    await db.authenticate();
+    logger.log('info', 'Connection has been established successfully.');
+  } catch (error) {
+    logger.error('error', 'Unable to connect to the database:', error);
+    setTimeout(connectWithRetry, 5000);
+  }
+};
+
+const main = async () => {
+  try {
+    await connectWithRetry();
+    const apiRoutes = routes;
+    await initializeApp(apiRoutes);
+  } catch (err) {
+    logger.error('[SERVER START]: %s', err);
+    process.exit(1);
+  }
+};
+
+main();
