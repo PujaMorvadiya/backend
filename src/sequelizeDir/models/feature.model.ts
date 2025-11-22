@@ -32,11 +32,11 @@ export default class Features extends Model<FeatureAttributesType, RequiredFeatu
   name: string;
 
   @CreatedAt
-  createdAt: Date;
+  created_at: Date;
 
   @UpdatedAt
-  updatedAt: Date;
+  updated_at: Date;
 
   @DeletedAt
-  deletedAt: Date;
+  deleted_at: Date;
 }
