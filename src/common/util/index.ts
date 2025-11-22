@@ -26,7 +26,10 @@ export const cleanObj = (obj: { [key: string]: any }) => {
       if (obj[key] === '') {
         obj[key] = null;
       }
-      if (!isNumeric(obj[key])) {
+      // if (!isNumeric(obj[key])) {
+      //   obj[key] = JSON.parse(obj[key]);
+      // }
+      if (typeof obj[key] === "string" && obj[key].startsWith("{")) {
         obj[key] = JSON.parse(obj[key]);
       }
     } catch (err) {

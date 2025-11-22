@@ -77,14 +77,16 @@ export class AuthService {
       is_active,
       {
         additionalMessageProps: {
-          username: parse(req?.user)?.full_name,
+          username: `${user?.first_name} ${user?.last_name}`,
           status: is_active,
+          user_id: user.id
         },
+
       },
       PermissionEnum.View,
       user
     );
-    return { token, user: { id: user.id, email: user.email, name: user.full_name } };
+    return { token, user: { id: user.id, email: user.email, } };
   }
 
   public async getLoggedInUser(req: Request) {

@@ -25,10 +25,8 @@ export default class AuthRoute implements Routes {
       this.authController.registerUser
     );
 
-    this.router.get(
+    this.router.post(
       `${this.path}/login`,
-      authMiddleware,
-      checkRoleMiddleware(FeaturesEnum.AuditLog, PermissionEnum.Create),
       validationMiddleware(LoginSchema, 'body'),
       this.authController.login
     );

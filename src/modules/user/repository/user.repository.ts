@@ -11,7 +11,7 @@ export default class UserRepo extends BaseRepository<User> {
   }
 
   public async getUserByEmail(email: string, options?: NonNullFindOptions<UserAttributesType>) {
-    return await this.DBModel.findOne({ ...options, where: { email } });
+    return await this.DBModel.findOne({ ...options, where: { email }, raw: true, });
   }
 
   public async addUser(user: UserAttributesType, transaction?: Transaction) {

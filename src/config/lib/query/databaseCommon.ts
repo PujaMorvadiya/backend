@@ -17,7 +17,7 @@ export const createLogMessage = async (
   featureName: string,
   titleName: string,
   additionalProps?: {
-    additionalMessageProps?: object;
+    additionalMessageProps?: Record<string, any>;
     languageData?: { language_considered?: boolean; language_id?: string };
     transaction?: Transaction;
   },
@@ -29,11 +29,18 @@ export const createLogMessage = async (
       ...(additionalProps && additionalProps?.additionalMessageProps),
     });
     const feature = await Feature.findOne({ where: { name: featureName }, attributes: ['id'] });
+    const parsedUser = req?.user ? parse(req.user) : null;
+
+    const user_id =
+      parsedUser?.id ??
+      additionalProps?.additionalMessageProps?.user_id ??
+      null;
+
     const logPayload = {
       title: titleName,
       description: description,
       feature_id: feature.id,
-      user_id: parse(req?.user ?? {}) ? parse(req?.user ?? {})?.id : 1,
+      user_id,
       is_language_considered: additionalProps?.languageData?.language_considered || false,
       language_id: additionalProps?.languageData?.language_id,
       permission_type: permissionType,
