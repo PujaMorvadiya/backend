@@ -112,12 +112,22 @@ export const rolePermissionData = [
     featureName: FeaturesEnum.Integration,
     permission: [PermissionEnum.View, PermissionEnum.Update],
   },
+  {
+    role: RoleEnum.Admin,
+    featureName: FeaturesEnum.Calendar,
+    permission: [PermissionEnum.Create, PermissionEnum.Update, PermissionEnum.Delete, PermissionEnum.View],
+  },
 
   // ================== Organization ==================
   {
     role: RoleEnum.Organization,
     featureName: FeaturesEnum.Event,
     permission: [PermissionEnum.Create, PermissionEnum.Update, PermissionEnum.View],
+  },
+  {
+    role: RoleEnum.Organization,
+    featureName: FeaturesEnum.Calendar,
+    permission: [PermissionEnum.View],
   },
   {
     role: RoleEnum.Organization,
@@ -169,6 +179,11 @@ export const rolePermissionData = [
   {
     role: RoleEnum.User,
     featureName: FeaturesEnum.Event,
+    permission: [PermissionEnum.View],
+  },
+  {
+    role: RoleEnum.User,
+    featureName: FeaturesEnum.Calendar,
     permission: [PermissionEnum.View],
   },
   {

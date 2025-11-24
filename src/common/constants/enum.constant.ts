@@ -27,6 +27,7 @@ export enum FeaturesEnum {
   Setting = 'Setting',
   AuditLog = 'AuditLog',
   Integration = 'Integration',
+  Calendar = 'Calendar'
 }
 
 export enum PermissionEnum {

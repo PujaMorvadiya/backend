@@ -61,23 +61,24 @@ import passport from 'passport';
 const authMiddleware = catchAsync((req: Request, res: Response, next: NextFunction) => {
   try {
     if (_.isUndefined(req.headers['authorization'])) {
-      next();
-    } else {
-      passport.authenticate('jwt', async (err: Error, user: User) => {
-        try {
-          if (err) throw new HttpException(401, 'INVALID_TOKEN', true);
-          if (!user) throw new HttpException(401, 'INVALID_TOKEN', true);
-          else {
-            await setUserData(req, user, next);
-            return next();
-          }
-        } catch (error) {
-          return generalResponse(res, error.message ? error?.message : error, 'UNAUTHORIZED_ERROR', 'error', true, 401);
-        }
-      })(req, res, next);
+      throw new HttpException(401, 'INVALID_TOKEN', true);
     }
+    passport.authenticate('jwt', { session: false }, async (err: Error, user: User | false) => {
+      try {
+        if (err) {
+          return generalResponse(res, err.message || 'Authentication failed', 'INVALID_TOKEN', 'error', true, 401);
+        }
+        if (!user) {
+          return generalResponse(res, 'Invalid token', 'INVALID_TOKEN', 'error', true, 401);
+        }
+        await setUserData(req, user, next);
+        return next();
+      } catch (error) {
+        return generalResponse(res, error.message ? error?.message : error, 'UNAUTHORIZED_ERROR', 'error', true, 401);
+      }
+    })(req, res, next);
   } catch (error) {
-    throw new HttpException(401, 'INVALID_TOKEN', true);
+    return generalResponse(res, 'Authentication failed', 'INVALID_TOKEN', 'error', true, 401);
   }
 });
 

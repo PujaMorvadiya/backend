@@ -29,7 +29,6 @@ export const consoleLogFormat = winston.format.combine(
 export const logger = winston.createLogger({
   format: fileLogFormat,
   transports: [
-    // debug log setting
     new WinstonDaily({
       level: 'debug',
       datePattern: 'YYYY-MM-DD',
@@ -39,7 +38,6 @@ export const logger = winston.createLogger({
       json: false,
       zippedArchive: true,
     }),
-    // error log setting
     new WinstonDaily({
       level: 'error',
       datePattern: 'YYYY-MM-DD',
@@ -66,10 +64,7 @@ export const stream = {
 };
 
 export const configData = Object.freeze({
-  // Default timer=>5 minutes
   defaultTimer: 300000,
-  // At least schedule time
   atLeastTimer: 120000,
-  // default undo time
   default_undo_time: 5000,
 });

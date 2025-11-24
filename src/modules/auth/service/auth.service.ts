@@ -86,42 +86,47 @@ export class AuthService {
       PermissionEnum.View,
       user
     );
-    return { token, user: { id: user.id, email: user.email, } };
+    return { token, user };
   }
 
   public async getLoggedInUser(req: Request) {
-    const {
-      tokenData: { user },
-    } = req;
+    const user = req.user;
+
     const roleAndPermission = await this.rolePermissionRepository.getAll({
       include: [
         {
           model: Features,
+          as: 'feature',
           attributes: [],
         },
         {
           model: Permission,
+          as: 'permission',
           attributes: [],
         },
         {
           model: Role,
+          as: 'role',
           attributes: [],
         },
       ],
       attributes: [
-        'access',
         [Sequelize.col('feature.name'), 'feature_name'],
-        [Sequelize.col('role.name'), 'role_name'],
         [Sequelize.col('feature.id'), 'feature_id'],
+
         [Sequelize.col('permission.name'), 'permission_name'],
         [Sequelize.col('permission.id'), 'permission_id'],
+
+        [Sequelize.col('role.role'), 'role_name'],
+        [Sequelize.col('role.id'), 'role_id'],
       ],
       where: {
-        role_id: user.role_id,
+        role_id: user.user_role.role_id,
       },
+      raw: true,
     });
-    const role = await this.roleRepository.getAll({});
 
+    const role = await this.roleRepository.getAll({});
     const permission = await this.permissionRepository.getAll({});
 
     return {
@@ -131,4 +136,5 @@ export class AuthService {
       permission,
     };
   }
+
 }
