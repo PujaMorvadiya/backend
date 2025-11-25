@@ -7,56 +7,7 @@ import User from '@/sequelizeDir/models/user.model';
 import UserRoles from '@/sequelizeDir/models/userRole.model';
 import { NextFunction, Request, Response } from 'express';
 import _ from 'lodash';
-import passport from 'passport';
-
-// const extractToken = (req: Request): string | null => {
-//   const authHeader = req.headers['authorization'];
-//   if (!authHeader) return null;
-//   if (!authHeader.startsWith('Bearer ')) return null;
-//   return authHeader.replace('Bearer ', '');
-// };
-
-// const authMiddleware = catchAsync(
-//   async (req: Request, _res: Response, next: NextFunction) => {
-//     const token = extractToken(req);
-
-//     if (!token) {
-//       throw new HttpException(401, "INVALID_TOKEN", true);
-//     }
-
-//     const decoded = await verifyJwtToken(token).catch(() => {
-//       throw new HttpException(401, "INVALID_TOKEN", true);
-//     });
-
-//     const userRepo = new UserRepo();
-//     const userData = parse(
-//       await userRepo.get({
-//         include: [
-//           {
-//             model: UserRoles,
-//             attributes: ["role_id"],
-//             include: [{ model: Role }],
-//           },
-//         ],
-//         where: { id: decoded["userId"], is_active: true },
-//       })
-//     );
-
-//     if (!userData) {
-//       throw new HttpException(401, "INVALID_TOKEN", true);
-//     }
-
-//     req.user = {
-//       id: userData.id,
-//       email: userData.email,
-//       role: userData?.user_role?.role,
-//       role_name: userData?.user_role?.role?.role,
-//       last_logged_in: userData.last_logged_in,
-//     };
-
-//     next();
-//   }
-// );
+import passport from './passport';
 
 const authMiddleware = catchAsync((req: Request, res: Response, next: NextFunction) => {
   try {

@@ -8,7 +8,6 @@ import { Routes } from './common/interface/general/routes.interface';
 import { logger } from './common/util/logger';
 import { NODE_ENV, PORT } from './config';
 import { errorMiddleware } from './middlewares/error.middleware';
-import './middlewares/passport';
 import db from './sequelizeDir/models';
 
 const app: Application = express();
