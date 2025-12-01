@@ -20,6 +20,11 @@ export class AuthService {
   private readonly permissionRepository = new PermissionRepository();
   private readonly rolePermissionRepository = new RolePermissionRepository();
 
+  private excludePassword(user: any) {
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
+  }
+
   async registerUser(req: Request, data: AuthRegisterReqInterface) {
     const { email, first_name, last_name, date_of_birth, profile_image, password } = data;
     const existing = await this.userRepository.getUserByEmail(data.email);
@@ -58,7 +63,7 @@ export class AuthService {
         role_id: role.id,
       }
     );
-    return user;
+    return this.excludePassword(user);
   }
 
   async login(req: Request, data: LoginData) {
@@ -86,7 +91,7 @@ export class AuthService {
       PermissionEnum.View,
       user
     );
-    return { token, user };
+    return { token, user: this.excludePassword(user) };
   }
 
   public async getLoggedInUser(req: Request) {
@@ -130,7 +135,7 @@ export class AuthService {
     const permission = await this.permissionRepository.getAll({});
 
     return {
-      user,
+      user: this.excludePassword(user),
       roleAndPermission,
       role,
       permission,
