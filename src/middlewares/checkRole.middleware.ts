@@ -6,7 +6,7 @@ import { Request, RequestHandler } from 'express';
 import _ from 'lodash';
 
 const checkRoleMiddleware = (feature: FeaturesEnum, permission: PermissionEnum): RequestHandler => {
-  return catchAsync(async (req, next) => {
+  return catchAsync(async (req, res, next) => {
     const rolePermissionRepo = new RolePermissionRepository();
     const result = await rolePermissionRepo.validateRolePermission(req.user?.user_role?.role_id, feature, permission);
 
