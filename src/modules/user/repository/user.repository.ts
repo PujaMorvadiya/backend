@@ -35,6 +35,12 @@ export default class UserRepo extends BaseRepository<User> {
 
     this.commonQuery.conditionSetter(req, where, 'first_name,last_name,email');
 
+    if (req.query.isDeletedUser === 'true' || req.query.isDeletedUser === true as any) {
+      where.deleted_at = { [Op.not]: null };
+    } else {
+      where.deleted_at = null;
+    }
+
     const userResponse = await this.DBModel.findAndCountAll({
       where,
       include: [

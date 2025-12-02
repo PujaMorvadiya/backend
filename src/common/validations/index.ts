@@ -130,32 +130,33 @@ export const deleteManyBody = Joi.object({
 });
 
 export const paginationValidation = {
-  id: Joi.number(),
-  translation: Joi.any(),
-  allLanguage: Joi.boolean(),
-  getByParentId: Joi.number(),
-  getByParentSlug: Joi.string(),
-  simplifyResponseByLanguage: Joi.boolean(),
-  page: Joi.number().label('Page'),
-  limit: Joi.number().label('Limit'),
-  sort: Joi.string().label('Sort'),
-  profile: joiCommon.joiBoolean,
-  dropdown: Joi.boolean().label('dropdown'),
-  dropdownParent: Joi.boolean().label('dropdown parent'),
-  search: Joi.custom((value) => {
-    if (value) return value;
-  }),
-  searchParams: joiCommon.joiString,
-  value: joiCommon.joiString,
-  label: joiCommon.joiString,
-  view: joiCommon.joiBoolean,
-  slug: joiCommon.joiString,
-  sortType: joiCommon.joiString,
-  sortName: joiCommon.joiString,
-  relationalGroup: joiCommon.joiString,
+  // id: Joi.number(),
+  // translation: Joi.any(),
+  // allLanguage: Joi.boolean(),
+  // getByParentId: Joi.number(),
+  // getByParentSlug: Joi.string(),
+  // simplifyResponseByLanguage: Joi.boolean(),
+  page: Joi.number().optional().label('Page'),
+  limit: Joi.number().optional().label('Limit'),
+  sort: Joi.string().optional().label('Sort'),
+  // profile: joiCommon.joiBoolean,
+  // dropdown: Joi.boolean().label('dropdown'),
+  // dropdownParent: Joi.boolean().label('dropdown parent'),
+  // search: Joi.custom((value) => {
+  //   if (value) return value;
+  // }),
+  // searchParams: joiCommon.joiString,
+  // value: joiCommon.joiString,
+  // label: joiCommon.joiString,
+  // view: joiCommon.joiBoolean,
+  // slug: joiCommon.joiString,
+  // sortType: joiCommon.joiString,
+  // sortName: joiCommon.joiString,
+  // relationalGroup: joiCommon.joiString,
 };
 
 export const commonCreate = {
   language_id: Joi.string().uuid(),
   parent_table_id: Joi.string().uuid(),
 };
+

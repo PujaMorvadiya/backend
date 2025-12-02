@@ -20,7 +20,10 @@ const validationMiddleware = (type: any, value: 'body' | 'query' | 'params' | st
   return async (req, res, next) => {
     try {
       cleanObj(req[value]);
-      req[value] = await type.validateAsync(req[value]);
+      const validated = await type.validateAsync(req[value]);
+      if (value !== 'query') {
+        req[value] = validated;
+      }
       return next();
     } catch (e) {
       const error: any = e;
