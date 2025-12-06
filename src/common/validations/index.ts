@@ -145,7 +145,7 @@ export const paginationValidation = {
   // search: Joi.custom((value) => {
   //   if (value) return value;
   // }),
-  // searchParams: joiCommon.joiString,
+  search: joiCommon.joiString,
   // value: joiCommon.joiString,
   // label: joiCommon.joiString,
   // view: joiCommon.joiBoolean,
