@@ -14,8 +14,8 @@ export default class UserRepo extends BaseRepository<User> {
     super(User.name);
   }
 
-  public async getUserByEmail(email: string, options?: NonNullFindOptions<UserAttributesType>) {
-    return await this.DBModel.findOne({ ...options, where: { email }, raw: true, });
+  public async getUserById(req: Request) {
+    return await this.DBModel.findOne({ where: { id: req.query.user_id.toString() }, raw: true, });
   }
 
   public async addUser(user: UserAttributesType, transaction?: Transaction) {
@@ -26,6 +26,21 @@ export default class UserRepo extends BaseRepository<User> {
     });
     newUser['role_id'] = user.user_role?.role_id;
     return newUser;
+  }
+
+  public async updateUser(req: Request) {
+    const { userId } = req.params;
+    const { first_name, last_name, email } = req.body;
+
+
+    const updateData: Partial<UserAttributesType> = {
+      first_name,
+      last_name,
+      email
+    };
+    const userData = (await this.update(updateData, { where: { id: userId } }))?.[1]?.[0];
+
+    return userData;
   }
 
   public async getAllUsersDetails(req: Request) {
