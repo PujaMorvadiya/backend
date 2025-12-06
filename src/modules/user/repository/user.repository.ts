@@ -14,6 +14,10 @@ export default class UserRepo extends BaseRepository<User> {
     super(User.name);
   }
 
+  public async getUserByEmail(email: string, options?: NonNullFindOptions<UserAttributesType>) {
+    return await this.DBModel.findOne({ ...options, where: { email }, raw: true, });
+  }
+
   public async getUserById(req: Request) {
     return await this.DBModel.findOne({ where: { id: req.query.user_id.toString() }, raw: true, });
   }
