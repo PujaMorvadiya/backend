@@ -40,5 +40,11 @@ export default class UserRoute implements Routes {
             validationMiddleware(updateUserSchema, 'body'),
             this.userController.updateUser
         );
+        this.router.delete(
+            `/admin/delete-user`,
+            authMiddleware,
+            checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.Delete),
+            this.userController.deleteUserByAdmin
+        );
     }
 }

@@ -4,7 +4,7 @@ import { UserAttributesType } from '@/sequelizeDir/models/types/user.model.type'
 import User from '@/sequelizeDir/models/user.model';
 import UserRoles from '@/sequelizeDir/models/userRole.model';
 import Role from '@/sequelizeDir/models/role.model';
-import { NonNullFindOptions, Transaction, WhereOptions, Op } from 'sequelize';
+import { NonNullFindOptions, Transaction, WhereOptions, Op, Sequelize } from 'sequelize';
 import { Request } from 'express';
 import { parse } from '@/common/util';
 
@@ -30,13 +30,14 @@ export default class UserRepo extends BaseRepository<User> {
 
   public async updateUser(req: Request) {
     const { userId } = req.params;
-    const { first_name, last_name, email } = req.body;
+    const { first_name, last_name, email, status } = req.body;
 
 
     const updateData: Partial<UserAttributesType> = {
       first_name,
       last_name,
-      email
+      email,
+      is_active: status === 'inactive' ? false : true
     };
     const userData = (await this.update(updateData, { where: { id: userId } }))?.[1]?.[0];
 
@@ -80,4 +81,36 @@ export default class UserRepo extends BaseRepository<User> {
 
     return this.commonQuery.dataSetter(req, { rows: data, count: userResponse.count });
   }
+
+  public deleteUsers = async (req: Request) => {
+    const transaction = await this.DBModel.sequelize.transaction();
+
+    try {
+      const userIds = String(req.query.user_id).split(',').map(id => id.trim());
+
+      const users = await this.DBModel.findAll({
+        where: { id: userIds },
+        transaction
+      });
+
+      for (const user of users) {
+        await user.update(
+          {
+            deleted_at: new Date()
+          },
+          { transaction }
+        );
+
+        await user.destroy({ transaction });
+      }
+
+      await transaction.commit();
+      return { success: true, deleted_users: userIds };
+
+    } catch (error) {
+      await transaction.rollback();
+      throw new Error(`Error while deleting users: ${error.message}`);
+    }
+  };
+
 }

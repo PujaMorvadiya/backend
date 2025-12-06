@@ -55,6 +55,7 @@ export const updateUserSchema = Joi.object({
     date_of_birth: joiCommon.joiString.optional(),
     address: joiCommon.joiString.optional(),
     id: joiCommon.joiString.optional(),
+    status: joiCommon.joiString.optional()
 }).options({
     abortEarly: false,
 });

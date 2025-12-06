@@ -27,5 +27,10 @@ export default class UserController {
         return generalResponse(res, response, 'USER_UPDATE', 'success', false);
     });
 
+    public deleteUserByAdmin = catchAsync(async (req: Request, res: Response) => {
+        const resp = await this.userRepository.deleteUsers(req);
+        return generalResponse(res, resp, 'DELETE_SUCCESS', 'success', false);
+    });
+
 
 }

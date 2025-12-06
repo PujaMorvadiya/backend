@@ -41,7 +41,7 @@ const addUsers = async () => {
     ];
 
     for (const user of users) {
-      const existingUser = await User.findOne({ where: { email: user.email } });
+      const existingUser = await User.findOne({ where: { email: user.email, deleted_at: null } });
       if (existingUser) {
         logger.info(`User with email ${user.email} already exists.`);
         continue;
@@ -66,6 +66,7 @@ const addUsers = async () => {
     logger.info('Users Data inserted successfully');
     process.exit(0);
   } catch (error) {
+    console.log("🚀 ~ addUsers ~ error:", error)
     await transaction.rollback();
     logger.error('Something Went Wrong !!', error);
     process.exit(1);
