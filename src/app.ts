@@ -9,6 +9,7 @@ import { logger } from './common/util/logger';
 import { NODE_ENV, PORT } from './config';
 import { errorMiddleware } from './middlewares/error.middleware';
 import db from './sequelizeDir/models';
+import path from 'path';
 
 const app: Application = express();
 const env: string = NODE_ENV || 'development';
@@ -19,6 +20,9 @@ function initializeMiddleWares() {
   app.use(cors({ credentials: true, origin: true }));
   app.use(cookieParser());
   app.use(passport.initialize());
+
+  app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
+
   app.use((req, res, next) => {
     global.currentRequest = req;
     global.currentResponse = res;

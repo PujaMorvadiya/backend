@@ -26,7 +26,16 @@ export class AuthService {
   }
 
   async registerUser(req: Request, data: AuthRegisterReqInterface) {
-    const { email, first_name, last_name, date_of_birth, profile_image, password } = data;
+    const { email, first_name, last_name, date_of_birth, password } = data;
+
+    const uploadedFile = req.files?.[0];
+
+    let profile_image: string | null = null;
+
+    if (uploadedFile) {
+      profile_image = "/uploads/" + uploadedFile.filename;
+    }
+
     const existing = await this.userRepository.getUserByEmail(data.email);
     if (existing) {
       throw new Error('User already exists');
