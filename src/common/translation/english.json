@@ -47,5 +47,6 @@
   "ACCESS_PERMISSION_DELETE": "Access Permissions Deleted Successfully",
   "ACCESS_PERMISSION_NOT_FOUND": "Access Permission Not Found",
   "VALIDATION_ERROR": "Validation Error",
-  "COMPANY_GET": "Company Fetched Successfully"
+  "COMPANY_GET": "Company Fetched Successfully",
+  "TIME_CONFLICT_ERROR": "Time Conflicting time slots"
 }

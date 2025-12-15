@@ -6,6 +6,7 @@ import { isEmpty } from 'lodash';
 import { Transaction } from 'sequelize';
 import slugify from 'slugify';
 import { v4 as uuidv4 } from 'uuid';
+import { timeZonesData } from '../constants/timezone.constant';
 
 export const catchAsync = (fn: Function) => (req: Request, res: Response, next: NextFunction) => {
   Promise.resolve(fn(req, res, next)).catch((err) => {
@@ -89,4 +90,10 @@ export const comparePassword = async (plain: string, hash: string) => {
 
 export const generateToken = (payload: object) => {
   return jwt.sign(payload, JWT_SECRET, { expiresIn: '1d' });
+};
+
+export const getTimezones = () => {
+  return timeZonesData.map((tz) => {
+    return { label: tz, value: tz };
+  });
 };

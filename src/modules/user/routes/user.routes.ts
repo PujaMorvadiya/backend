@@ -46,5 +46,6 @@ export default class UserRoute implements Routes {
             checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.Delete),
             this.userController.deleteUserByAdmin
         );
+        this.router.get(`${this.path}/timezone`, this.userController.getTimezone);
     }
 }

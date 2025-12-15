@@ -1,5 +1,5 @@
 import { generalResponse } from "@/common/helper/response/generalResponse";
-import { catchAsync } from "@/common/util";
+import { catchAsync, getTimezones } from "@/common/util";
 import { Request, Response } from 'express';
 import UserRepo from "../repository/user.repository";
 
@@ -30,6 +30,11 @@ export default class UserController {
     public deleteUserByAdmin = catchAsync(async (req: Request, res: Response) => {
         const resp = await this.userRepository.deleteUsers(req);
         return generalResponse(res, resp, 'DELETE_SUCCESS', 'success', false);
+    });
+
+    public getTimezone = catchAsync(async (req: Request, res: Response) => {
+        const data = getTimezones();
+        return generalResponse(res, data, 'USER_FETCH', 'success', false);
     });
 
 
