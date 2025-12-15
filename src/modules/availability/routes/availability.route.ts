@@ -7,7 +7,7 @@ import { Router } from "express";
 import AvailabilityController from "../controller/availability.controller";
 import { BulkAvailabilitySchema } from "../validation/availability.validation";
 
-export default class TeacherAvailabilityRoute implements Routes {
+export default class AvailabilityRoute implements Routes {
     public path = '/availabilities';
     public router = Router();
     public availabilityController = new AvailabilityController();
