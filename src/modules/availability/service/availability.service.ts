@@ -6,6 +6,9 @@ import { format, fromZonedTime } from 'date-fns-tz';
 import { addDays, getDay, isAfter, isBefore, max, min } from "date-fns";
 import { availabilityDataType } from "../interface/availability.interface";
 import { HttpException } from "@/common/helper/response/httpException";
+import { Includeable, Op, WhereOptions } from "sequelize";
+import { AvailabilitiesAttributesType } from "@/sequelizeDir/models/types/availability.model.type";
+import User from "@/sequelizeDir/models/user.model";
 
 export default class AvailabilityService extends BaseRepository<Availabilities> {
     private readonly commonQuery = new CommonQuery(this.DBModel);
@@ -71,9 +74,9 @@ export default class AvailabilityService extends BaseRepository<Availabilities> 
         );
 
         // conflict check only for non-admin
-        if (!isAdmin) {
-            await this.checkForConflicts(availabilitiesData, availabilityExists);
-        }
+        // if (!isAdmin) {
+        await this.checkForConflicts(availabilitiesData, availabilityExists);
+        // }
 
         if (filterAvailability.length > 0) {
             return await Availabilities.bulkCreate(filterAvailability);
@@ -133,5 +136,51 @@ export default class AvailabilityService extends BaseRepository<Availabilities> 
             }
         }
     };
+
+    public async handleAllAvailabilityData(req: Request) {
+        const { query, user } = req;
+        const { startDate, endDate, allAvailabilities } = query;
+
+        const where: WhereOptions<AvailabilitiesAttributesType> = {};
+        const include: Includeable | Includeable[] = [];
+        const attributes = this.commonQuery.attributesSetter(req, ['date', 'start_time', 'end_time', 'user_id', 'id'], null);
+        const pageParams = this.commonQuery.paginationSetter(req);
+        this.commonQuery.conditionSetter(req, where, null);
+        const order = this.commonQuery.orderSetter(req);
+
+        if (startDate && endDate) {
+            where[Op.or] = [
+                {
+                    start_time: {
+                        [Op.between]: [new Date(startDate as string), new Date(endDate as string)],
+                    },
+                },
+                {
+                    end_time: {
+                        [Op.between]: [new Date(startDate as string), new Date(endDate as string)],
+                    },
+                },
+            ];
+
+            if (allAvailabilities) {
+                (where as any).user_id = user.id;
+            } else {
+                include.push({
+                    model: User,
+                    attributes: ['first_name', 'last_name', 'profile_image', 'full_name'],
+                });
+            }
+        }
+
+        const availabilityData = await this.DBModel.findAndCountAll({
+            where,
+            attributes,
+            include,
+            order,
+            ...pageParams,
+        });
+        return this.commonQuery.dataSetter(req, availabilityData);
+    }
+
 
 }

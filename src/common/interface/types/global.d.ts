@@ -7,8 +7,9 @@ type UserInstance = InstanceType<typeof User>;
 
 declare global {
   namespace Express {
-    interface User extends UserInstance {}
+    interface User extends UserInstance { }
     interface Request {
+      timezone: string;
       currentUser: User;
       transaction?: Transaction;
       tokenData: TokenDataInterface;

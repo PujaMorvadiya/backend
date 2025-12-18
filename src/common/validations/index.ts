@@ -148,7 +148,7 @@ export const paginationValidation = {
   search: joiCommon.joiString,
   // value: joiCommon.joiString,
   // label: joiCommon.joiString,
-  // view: joiCommon.joiBoolean,
+  view: joiCommon.joiBoolean,
   // slug: joiCommon.joiString,
   // sortType: joiCommon.joiString,
   // sortName: joiCommon.joiString,

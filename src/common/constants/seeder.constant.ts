@@ -14,6 +14,11 @@ export const rolePermissionData = [
   },
   {
     role: RoleEnum.Admin,
+    featureName: FeaturesEnum.Admin,
+    permission: [PermissionEnum.View, PermissionEnum.Update, PermissionEnum.Create, PermissionEnum.Delete],
+  },
+  {
+    role: RoleEnum.Admin,
     featureName: FeaturesEnum.User,
     permission: [PermissionEnum.View, PermissionEnum.Update, PermissionEnum.Delete],
   },

@@ -5,7 +5,7 @@ import checkRoleMiddleware from "@/middlewares/checkRole.middleware";
 import validationMiddleware from "@/middlewares/validation.middleware";
 import { Router } from "express";
 import AvailabilityController from "../controller/availability.controller";
-import { BulkAvailabilitySchema } from "../validation/availability.validation";
+import { BulkAvailabilitySchema, getAvailabilitySchema } from "../validation/availability.validation";
 
 export default class AvailabilityRoute implements Routes {
     public path = '/availabilities';
@@ -18,28 +18,28 @@ export default class AvailabilityRoute implements Routes {
 
     private initializeRoutes() {
         //=========== Create Availability =============
-        // this.router
-        //     .route(`${this.path}`)
-        //     .post(
-        //         authMiddleware,
-        //         validationMiddleware(createTeacherAvailSchema, 'body'),
-        //         checkRoleMiddleware(FeaturesEnum.Teacher, PermissionEnum.Create),
-        //         this.availabilityController.createAvailability
-        //     )
-        //     //=========== Update Availability =============
-        //     .put(
-        //         authMiddleware,
-        //         checkRoleMiddleware(FeaturesEnum.Teacher, PermissionEnum.Update),
-        //         validationMiddleware(updateTeacherAvailSchema, 'body'),
-        //         this.availabilityController.updateAvailability
-        //     )
-        //     //=========== Get Availability =============
-        //     .get(
-        //         authMiddleware,
-        //         validationMiddleware(getAvailabilitySchema, 'query'),
-        //         checkRoleMiddleware(FeaturesEnum.Teacher, PermissionEnum.View),
-        //         this.availabilityController.getAllAvailabilities
-        //     );
+        this.router
+            .route(`${this.path}`)
+            //     .post(
+            //         authMiddleware,
+            //         validationMiddleware(createTeacherAvailSchema, 'body'),
+            //         checkRoleMiddleware(FeaturesEnum.Teacher, PermissionEnum.Create),
+            //         this.availabilityController.createAvailability
+            //     )
+            //     //=========== Update Availability =============
+            //     .put(
+            //         authMiddleware,
+            //         checkRoleMiddleware(FeaturesEnum.Teacher, PermissionEnum.Update),
+            //         validationMiddleware(updateTeacherAvailSchema, 'body'),
+            //         this.availabilityController.updateAvailability
+            //     )
+            //     //=========== Get Availability =============
+            .get(
+                authMiddleware,
+                validationMiddleware(getAvailabilitySchema, 'query'),
+                checkRoleMiddleware(FeaturesEnum.Admin, PermissionEnum.View),
+                this.availabilityController.getAllAvailabilities
+            );
 
         // this.router
         //     .route(`${this.path} + '/:id`)

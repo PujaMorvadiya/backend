@@ -46,15 +46,8 @@ export default class Availabilities extends Model<
     @Column(DataTypes.DATE)
     end_time: string;
 
-
     @Column(DataTypes.STRING)
     timezone: string;
-
-    @Column({
-        allowNull: false,
-        type: DataTypes.STRING,
-    })
-    availability_type: string;
 
     @CreatedAt
     created_at: Date;

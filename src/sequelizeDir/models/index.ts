@@ -8,6 +8,7 @@ import Role from './role.model';
 import RolePermission from './rolePermission.model';
 import User from './user.model';
 import UserRoles from './userRole.model';
+import Availabilities from './availability.model';
 
 let db: Sequelize;
 
@@ -17,7 +18,7 @@ export const initSequelize = () => {
     logging: +ENABLE_LOG === 1 && logger.info.bind(null, '\n%s'),
     dialectOptions: { application_name: `Universal - ${NODE_ENV}` },
   });
-  sequelize.addModels([User, UserRoles, Role, Permission, RolePermission, Features, AuditLogs]);
+  sequelize.addModels([User, UserRoles, Role, Permission, RolePermission, Features, AuditLogs, Availabilities]);
 
   return sequelize;
 };
